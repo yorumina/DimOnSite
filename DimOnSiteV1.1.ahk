@@ -31,7 +31,7 @@ Check() {
     proc  := WinGetProcessName("ahk_id " h)
 
     match := false
-    if (proc ~= "i)msedge.exe") {
+    if (proc ~= "i)chrome.exe|msedge.exe|firefox.exe|brave.exe|opera.exe") {
         for key in siteKeys {
             if InStr(title, key) {
                 match := true
@@ -71,5 +71,6 @@ SetBrightness(pct) {
 }
 
 OnExit(*) => (SetBrightness(normal))
+
 
 
