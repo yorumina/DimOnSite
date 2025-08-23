@@ -1,9 +1,21 @@
-﻿#Requires AutoHotkey v2.0
+#Requires AutoHotkey v2.0
+#SingleInstance Force
+
+; === 自動提權（永遠以系統管理員執行） ===
+if !A_IsAdmin {
+    try {
+        Run '*RunAs "' A_ScriptFullPath '"'
+    } catch as e {
+        MsgBox "需要系統管理員權限才能調整亮度`n請改用「以系統管理員身分執行」。`n`n錯誤：" e.Message
+    }
+    ExitApp
+}
+
 ; === 可調區 ===
 siteKeys := ["Netflix", "動畫瘋"] ; 目標網站標題片段(可自行修改)
 dim      := 1                     ; 命中時亮度（%）
 normal   := 100                   ; 其他情況亮度（%）
-useZero  := false                  ; true=允許 0%，false=最小用 dim(部分筆電不支援)
+useZero  := false                 ; true=允許 0%，false=最小用 dim(部分筆電不支援)
 interval := 300                   ; 檢查間隔（毫秒）
 
 prevState := ""
@@ -19,7 +31,7 @@ Check() {
     proc  := WinGetProcessName("ahk_id " h)
 
     match := false
-    if (proc ~= "i)chrome.exe|msedge.exe|firefox.exe|brave.exe|opera.exe") {
+    if (proc ~= "i)msedge.exe") {
         for key in siteKeys {
             if InStr(title, key) {
                 match := true
@@ -59,3 +71,5 @@ SetBrightness(pct) {
 }
 
 OnExit(*) => (SetBrightness(normal))
+
+
