@@ -116,7 +116,6 @@ StringToSites(str) {
         if (nm != "")
             sites.Push({name:nm, enabled:en})
     }
-    ; 不再加入任何預設網站（保持空清單）
 }
 SaveSettings() {
     global settingsFile, dim, normal, useZero, interval
@@ -133,7 +132,7 @@ LoadSettings() {
         if (sl != "")
             StringToSites(sl)
         else
-            sites := []   ; 無預設
+            sites := []  
         dim     := Integer(IniRead(settingsFile, "DimOnSite", "dim",     dim))
         normal  := Integer(IniRead(settingsFile, "DimOnSite", "normal",  normal))
         useZero := Integer(IniRead(settingsFile, "DimOnSite", "useZero", useZero)) ? true : false
@@ -141,7 +140,7 @@ LoadSettings() {
         if (nInt != interval)
             interval := nInt
     } else {
-        sites := []       ; 無預設
+        sites := []      
     }
     RefreshSiteKeys()
 }
@@ -308,7 +307,6 @@ ShowPanel() {
     btnApply.OnEvent("Click", ApplyAndSave)
     RegisterBtn(btnRestore), RegisterBtn(btnApply)
 
-    ; 右下角簽名：與「套用」同高、同一水平線（垂直置中）
     btnApply.GetPos(&ax, &ay, &aw, &ah)
     g.AddText(Format("x{1} y{2} w{3} h{4} Right cA0A0A0 +0x200 BackgroundTrans"
         , RX, ay, RW, BTN_H), "Written by yoru")
@@ -389,6 +387,7 @@ ApplyAndSave(*) {
 InstallBtnMouseHooks()
 LoadSettings()
 SetTimer(Check, 0), SetTimer(Check, interval)  ; 以載入後的間隔重新啟動定時器
+
 
 
 
